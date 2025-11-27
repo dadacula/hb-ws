@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>NovaAI Studio · AIGC Landing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="Generate copy, images and ideas in seconds with NovaAI Studio — your all-in-one AIGC workspace."
+  />
+  <style>
+    :root {
+      --bg: #040816;
+      --bg-soft: #070b1f;
+      --bg-card: #0c1025;
+      --primary: #4f46e5;
+      --primary-soft: rgba(79, 70, 229, 0.12);
+      --primary-grad: linear-gradient(135deg, #4f46e5, #22d3ee);
+      --text-main: #f9fafb;
+      --text-soft: #9ca3af;
+      --border-subtle: rgba(148, 163, 184, 0.25);
+      --radius-xl: 24px;
+      --shadow-soft: 0 24px 80px rgba(15, 23, 42, 0.7);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0, #020617 55%, #000 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 20px 60px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0, #e5e7eb 0, #4f46e5 40%, #020617 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(129, 140, 248, 0.6);
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .nav-title {
+      font-weight: 600;
+      font-size: 17px;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .nav-link {
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: var(--text-soft);
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+
+    .nav-link:hover {
+      border-color: rgba(148, 163, 184, 0.35);
+      color: #e5e7eb;
+    }
+
+    .nav-cta {
+      padding: 7px 14px;
+      border-radius: 999px;
+      background-image: var(--primary-grad);
+      border: none;
+      color: white;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.5);
+    }
+
+    .nav-cta:hover {
+      filter: brightness(1.05);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 32px;
+      align-items: center;
+    }
+
+    @media (max-width: 840px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background-color: rgba(15, 23, 42, 0.85);
+      color: var(--text-soft);
+      font-size: 11px;
+      margin-bottom: 14px;
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25);
+    }
+
+    .hero-title {
+      font-size: 38px;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 14px;
+    }
+
+    .hero-highlight {
+      background-image: var(--primary-grad);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    @media (max-width: 640px) {
+      .hero-title {
+        font-size: 30px;
+      }
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-soft);
+      max-width: 420px;
+      margin-bottom: 20px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .btn-primary {
+      padding: 10px 18px;
+      border-radius: 999px;
+      background-image: var(--primary-grad);
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 16px 40px rgba(79, 70, 229, 0.7);
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.06);
+    }
+
+    .btn-ghost {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-ghost span {
+      font-size: 16px;
+    }
+
+    .hero-footnote {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .hero-footnote strong {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .hero-visual {
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at top left, #4f46e5 0, #0b1120 50%, #020617 100%);
+      padding: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      inset: -60%;
+      background:
+        radial-gradient(circle at 10% 0, rgba(129, 140, 248, 0.55), transparent 55%),
+        radial-gradient(circle at 90% 20%, rgba(45, 212, 191, 0.45), transparent 55%);
+      opacity: 0.6;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .hero-panel {
+      position: relative;
+      border-radius: 18px;
+      background-color: rgba(15, 23, 42, 0.94);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      padding: 14px 14px 12px;
+      backdrop-filter: blur(22px);
+    }
+
+    .hero-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .hero-tab {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      cursor: default;
+    }
+
+    .hero-tab--active {
+      background-color: var(--primary-soft);
+      border-color: rgba(79, 70, 229, 0.7);
+      color: #e5e7eb;
+    }
+
+    .hero-editor {
+      border-radius: 14px;
+      background-color: #020617;
+      border: 1px solid rgba(31, 41, 55, 0.8);
+      padding: 10px;
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 11px;
+      color: #e5e7eb;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .editor-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+      color: #6b7280;
+    }
+
+    .editor-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background-color: #4b5563;
+    }
+
+    .editor-tag {
+      margin-left: auto;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 10px;
+      color: #9ca3af;
+    }
+
+    .editor-line {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 4px;
+      align-items: baseline;
+    }
+
+    .editor-lineno {
+      width: 16px;
+      text-align: right;
+      color: #4b5563;
+    }
+
+    .editor-code {
+      flex: 1;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .editor-highlight {
+      color: #a5b4fc;
+    }
+
+    .editor-accent {
+      color: #22d3ee;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      font-size: 10px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      color: #9ca3af;
+    }
+
+    .badge strong {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .hero-floating {
+      position: absolute;
+      right: 10px;
+      bottom: 18px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background-color: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 10px;
+      color: #cbd5f5;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 18px 30px rgba(15, 23, 42, 0.9);
+    }
+
+    .hero-floating span {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: conic-gradient(from 90deg, #4f46e5, #22c55e, #22d3ee, #4f46e5);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.9);
+    }
+
+    .section {
+      margin-top: 40px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      font-size: 13px;
+      color: var(--text-soft);
+      margin-bottom: 18px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    @media (max-width: 840px) {
+      .grid-3 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      border-radius: 18px;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      padding: 14px 14px 13px;
+    }
+
+    .card-label {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .card-text {
+      font-size: 12px;
+      color: var(--text-soft);
+      line-height: 1.6;
+    }
+
+    .pricing {
+      margin-top: 32px;
+      border-radius: 20px;
+      padding: 18px 16px 14px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.35), transparent 40%),
+                  radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.25), transparent 40%),
+                  rgba(15, 23, 42, 0.96);
+    }
+
+    .pricing-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .pricing-main {
+      font-size: 14px;
+      max-width: 400px;
+    }
+
+    .pricing-main p {
+      color: var(--text-soft);
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .pricing-tag {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .pricing-right {
+      text-align: right;
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .pricing-figure {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .pricing-figure span {
+      font-size: 13px;
+      font-weight: 400;
+      color: #9ca3af;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 11px;
+      color: #6b7280;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      border-top: 1px solid rgba(31, 41, 55, 0.85);
+      padding-top: 10px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .footer-links a {
+      color: #6b7280;
+    }
+
+    .footer-links a:hover {
+      color: #e5e7eb;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="nav">
+      <div class="nav-left">
+        <div class="logo-badge">N</div>
+        <div class="nav-title">NovaAI Studio</div>
+      </div>
+      <div class="nav-right">
+        <button class="nav-link">Docs</button>
+        <button class="nav-link">Use cases</button>
+        <button class="nav-cta">Launch Studio</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <div class="pill">
+            <div class="pill-dot"></div>
+            Live · AIGC workspace for teams
+          </div>
+          <h1 class="hero-title">
+            Turn a <span class="hero-highlight">single prompt</span><br />
+            into 100+ pieces of content.
+          </h1>
+          <p class="hero-subtitle">
+            NovaAI Studio lets you generate long-form copy, one-click social posts and on-brand images
+            in seconds — powered by your own style, tone and knowledge base.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn-primary">
+              Start free workspace
+            </button>
+            <button class="btn-ghost">
+              <span>▶</span> Watch 90s demo
+            </button>
+          </div>
+
+          <p class="hero-footnote">
+            <strong>No credit card.</strong> 10,000 free tokens · bring your own OpenAI / Claude key later.
+          </p>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-glow"></div>
+          <div class="hero-panel">
+            <div class="hero-tabs">
+              <div class="hero-tab hero-tab--active">⬤ Prompt board</div>
+              <div class="hero-tab">Image scene</div>
+              <div class="hero-tab">Chat flow</div>
+            </div>
+            <div class="hero-editor">
+              <div class="editor-header">
+                <div class="editor-dot"></div>
+                <div class="editor-dot"></div>
+                <div class="editor-dot"></div>
+                <div class="editor-tag">auto-generate.tsx</div>
+              </div>
+
+              <div class="editor-line">
+                <span class="editor-lineno">1</span>
+                <div class="editor-code">
+                  <span class="editor-highlight">const</span> campaign =
+                  <span class="editor-accent">await</span> nova.aigc.create({
+                </div>
+              </div>
+              <div class="editor-line">
+                <span class="editor-lineno">2</span>
+                <div class="editor-code">
+                  &nbsp;&nbsp;brand: <span class="editor-highlight">'Hug Studio'</span>,
+                </div>
+              </div>
+              <div class="editor-line">
+                <span class="editor-lineno">3</span>
+                <div class="editor-code">
+                  &nbsp;&nbsp;goal: <span class="editor-highlight">'launch new AI product'</span>,
+                </div>
+              </div>
+              <div class="editor-line">
+                <span class="editor-lineno">4</span>
+                <div class="editor-code">
+                  &nbsp;&nbsp;outputs: [<span class="editor-highlight">'blog'</span>, <span class="editor-highlight">'X-threads'</span>, <span class="editor-highlight">'image-hero'</span>]
+                </div>
+              </div>
+              <div class="editor-line">
+                <span class="editor-lineno">5</span>
+                <div class="editor-code">});</div>
+              </div>
+              <div class="editor-line">
+                <span class="editor-lineno">6</span>
+                <div class="editor-code">
+                  <span class="editor-accent">await</span> nova.publish(campaign);
+                </div>
+              </div>
+
+              <div class="badge-row">
+                <div class="badge">
+                  ⚡ <strong>3.2s</strong> to first draft
+                </div>
+                <div class="badge">
+                  🎨 20+ on-brand images
+                </div>
+                <div class="badge">
+                  🧠 Learns from your docs &amp; URLs
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-floating">
+              <span></span>
+              AI is drafting: “Launch email · Version 3”
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title">Built for modern AIGC workflows</h2>
+        <p class="section-subtitle">
+          From solo creators to teams, NovaAI Studio keeps all your prompts, assets and brand rules in one place.
+        </p>
+
+        <div class="grid-3">
+          <div class="card">
+            <p class="card-label">01 · Content engine</p>
+            <h3 class="card-title">One prompt, every channel</h3>
+            <p class="card-text">
+              Generate blog posts, X / Threads, LinkedIn updates, product copy and more in one flow.
+              Auto-resize tone &amp; length per channel.
+            </p>
+          </div>
+          <div class="card">
+            <p class="card-label">02 · Image generation</p>
+            <h3 class="card-title">On-brand AIGC visuals</h3>
+            <p class="card-text">
+              Keep consistent styles with prompt templates, negative prompts and seed control.
+              Export hi-res images for web &amp; print in a click.
+            </p>
+          </div>
+          <div class="card">
+            <p class="card-label">03 · Knowledge layer</p>
+            <h3 class="card-title">Grounded on your data</h3>
+            <p class="card-text">
+              Connect Notion, docs or URLs so generations stay accurate to your product,
+              pricing and messaging — no more hallucinated features.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="pricing">
+        <div class="pricing-inner">
+          <div class="pricing-main">
+            <div class="pricing-tag">Simple pricing, scale as you grow</div>
+            <p>
+              Start free, then plug in your own API keys when you’re ready. Keep full control over spend
+              while NovaAI Studio handles prompts, presets and collaboration.
+            </p>
+          </div>
+          <div class="pricing-right">
+            <div class="pricing-figure">
+              $0 <span>/ month · 10k tokens</span>
+            </div>
+            <div>Pro workspaces from $19 / editor / month.</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div>© <span id="year"></span> NovaAI Studio. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="#">Status</a>
+        <a href="#">Security</a>
+        <a href="#">Terms</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
